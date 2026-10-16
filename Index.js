@@ -1,4 +1,4 @@
-<script>
+
 /* =========================================
    10 SOCIAL PLATFORMS METADATA
 ========================================= */
@@ -806,4 +806,4 @@ async function copyCode(){
     document.getElementById("message").textContent = "✓ Code copied successfully.";
   }
 }
-</script>
+
