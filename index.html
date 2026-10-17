@@ -677,7 +677,7 @@ button.generate-btn:hover {
 </head>
 <body>
 
-<div class="app-frame-container">
+<div class="app-frame-container" id="mainAppContainer">
   <header class="header">
     <div class="brand"><span class="brand-icon"></span>VIP Verification Gateway</div>
     <div class="admin">Free Verification</div>
@@ -875,21 +875,20 @@ button.generate-btn:hover {
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  // Super Fast & Dynamic Live Fluctuating Counters (Active 10k-15k, New 2k-5k)
   let activeUsers = 12450;
   let newUsers = 3820;
 
   setInterval(() => {
-    activeUsers += Math.floor(Math.random() * 81) - 40; // -40 to +40 fast shift
+    activeUsers += Math.floor(Math.random() * 81) - 40; 
     if(activeUsers < 10000) activeUsers = 10000;
     if(activeUsers > 15000) activeUsers = 15000;
     document.getElementById("activeCount").textContent = activeUsers.toLocaleString();
 
-    newUsers += Math.floor(Math.random() * 51) - 25; // -25 to +25 fast shift
+    newUsers += Math.floor(Math.random() * 51) - 25; 
     if(newUsers < 2000) newUsers = 2000;
     if(newUsers > 5000) newUsers = 5000;
     document.getElementById("newUserCount").textContent = newUsers.toLocaleString();
-  }, 400); // Super fast interval update
+  }, 400);
 
   window.handleTimerPresetChange = function() {
     const val = document.getElementById("timerPresetSelect").value;
@@ -1030,11 +1029,12 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   window.addEventListener("DOMContentLoaded", function(){
+    if (checkAndRenderSharedGateway()) return;
+
     if(document.querySelectorAll("#dynamicSocialList .url-card").length === 0){
       addSelectedPlatform("youtube");
       addSelectedPlatform("telegram");
     }
-    checkAndRenderSharedGateway();
     renderHistoryList();
   });
 
@@ -1096,7 +1096,7 @@ document.addEventListener('DOMContentLoaded', () => {
           enableCaptcha: enableCaptcha,
           timerSeconds: timerSeconds
         };
-        saveToHistory(configObj);
+        saveToHistory(configObj, code);
 
         button.disabled = false;
         button.innerHTML = "✓ Gateway Generated";
@@ -1137,7 +1137,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (e) { prompt("Copy link:", shareUrl); }
   };
 
-  function saveToHistory(configObj) {
+  function saveToHistory(configObj, generatedCode) {
     let history = [];
     try {
       history = JSON.parse(localStorage.getItem("israr_homepage_history_v7")) || [];
@@ -1147,7 +1147,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const dateStr = now.toLocaleDateString() + ' ' + now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     const summary = configObj.links.map(l => l.platform).join(" → ");
     
-    history.unshift({ config: configObj, summary: summary, date: dateStr });
+    history.unshift({ config: configObj, code: generatedCode, summary: summary, date: dateStr });
     if(history.length > 200) history = history.slice(0, 200);
 
     try {
@@ -1197,27 +1197,22 @@ document.addEventListener('DOMContentLoaded', () => {
     if(!item || !item.config) return;
     const cfg = item.config;
 
-    // Load Social Links
     document.getElementById("dynamicSocialList").innerHTML = "";
     cfg.links.forEach(l => {
       addSelectedPlatform(l.key, l.platform, l.url);
     });
 
-    // Load Timer
     document.getElementById("timerPresetSelect").value = cfg.timerSeconds;
     handleTimerPresetChange();
 
-    // Load Captcha Toggle
     document.getElementById("enableCaptcha").checked = cfg.enableCaptcha;
 
-    // Load Password Toggle & Value
     document.getElementById("enablePassword").checked = cfg.enablePassword;
     togglePasswordBox();
     if(cfg.enablePassword) {
       document.getElementById("verificationPassword").value = cfg.password || "";
     }
 
-    // Load Output Mode & Key/URL
     if(cfg.outputMode === 'url') {
       document.querySelector('input[name="outputMode"][value="url"]').checked = true;
     } else {
@@ -1226,8 +1221,15 @@ document.addEventListener('DOMContentLoaded', () => {
     toggleOutputMode();
     document.getElementById("customAccessKey").value = cfg.outputValue;
 
+    if (item.code) {
+      document.getElementById("generatedCode").value = item.code;
+      document.getElementById("previewFrame").srcdoc = item.code;
+      document.getElementById("result").classList.add("show");
+      showCode();
+    }
+
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    document.getElementById("message").textContent = "✓ All gateway data loaded successfully into the form!";
+    document.getElementById("message").textContent = "✓ All gateway data and code loaded successfully!";
   }
 
   window.deleteHistoryItem = function(index) {
@@ -1250,30 +1252,30 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   window.openTestInNewTab = function(){
-    const code = document.getElementById("generatedCode").value;
-    if(!code) return;
-    const newWin = window.open('', '_blank');
-    if (newWin) {
-      newWin.document.open();
-      newWin.document.write(code);
-      newWin.document.close();
-    } else {
-      alert("Please allow popups for this website to test in a new tab.");
+    const shareUrl = getShareableLink();
+    if (!shareUrl) {
+      alert("Please generate or fill in valid data first.");
+      return;
     }
+    window.open(shareUrl, '_blank');
   }
 
   function checkAndRenderSharedGateway() {
     const urlParams = new URLSearchParams(window.location.search);
     const encodedData = urlParams.get("gateway");
-    if (!encodedData) return;
+    if (!encodedData) return false;
     try {
       const jsonStr = decodeURIComponent(atob(encodedData));
       const data = JSON.parse(jsonStr);
       if (data && data.l && data.o) {
         const code = createGatewayCode(data.l, data.ep === 1, data.p || '', data.o, data.m || 'key', data.c === 1, data.t || 10);
-        document.open(); document.write(code); document.close();
+        document.open(); 
+        document.write(code); 
+        document.close();
+        return true;
       }
     } catch (err) { console.error("Invalid gateway payload", err); }
+    return false;
   }
 
   function createGatewayCode(links, enablePassword, password, outputValue, outputMode, enableCaptcha, timerSeconds){
@@ -1523,19 +1525,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById("codeTab").classList.remove("active");
     document.getElementById("previewTab").classList.add("active");
     document.getElementById("previewFrame").srcdoc = code;
-  }
-
-  window.openTestInNewTab = function(){
-    const code = document.getElementById("generatedCode").value;
-    if(!code) return;
-    const newWin = window.open('', '_blank');
-    if (newWin) {
-      newWin.document.open();
-      newWin.document.write(code);
-      newWin.document.close();
-    } else {
-      alert("Please allow popups for this website to test in a new tab.");
-    }
   }
 
   window.copyCode = async function(){
