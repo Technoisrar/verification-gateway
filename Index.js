@@ -1,6 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>VIP Verification Gateway Generator</title>
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
 
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-height: 100vh !important;
+  background-color: #03050b !important;
+  color: #f5f8ff !important;
+  font-family: Inter, Arial, sans-serif !important;
+  overflow-x: hidden !important;
+}
 
+*, *:before, *:after {
+  box-sizing: border-box !important;
+}
+
+.app-frame-container {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  max-width: 100% !important;
+  height: 100vh !important;
+  background: radial-gradient(circle at 10% 0%, rgba(45,210,255,.12), transparent 28%), 
+              radial-gradient(circle at 90% 10%, rgba(125,76,255,.14), transparent 30%), 
+              radial-gradient(circle at 50% 100%, rgba(0,180,255,.06), transparent 35%), #03050b !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  z-index: 999999 !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+.app-frame-container::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: .18;
+  background-image: linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+  background-size: 55px 55px;
+}
+
+:root {
+  --bg: #03050b;
+  --cyan: #42e8ff;
+  --purple: #8c6cff;
+  --green: #4ce3a8;
+  --red: #ff647c;
+  --text: #f5f8ff;
+  --muted: #7f8ca3;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  height: 72px;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(3, 7, 15, .95);
+  border-bottom: 1px solid rgba(255, 255, 255, .07);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  width: 100%;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  color: #bdf6ff;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+.brand-icon {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9px;
+  border: 1px solid rgba(70, 225, 255, .25);
+  background: rgba(50, 220, 255, .07);
+}
+.brand-icon:before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 8px var(--cyan), 0 0 20px rgba(66, 232, 255, .7);
+}
+.admin {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #65738a;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+.admin:before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 10px var(--green);
+}
+
+.wrapper {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 40px 14px 60px;
+}
+.hero {
+  text-align: center;
+  padding: 0 8px 30px;
+}
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 13px;
+  border-radius: 50px;
+  color: #72eaff;
+  background: linear-gradient(135deg, rgba(55, 220, 255, .10), rgba(100, 90, 255, .06));
+  border: 1px solid rgba(72, 222, 255, .20);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1.7px;
+}
+.badge i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 7px var(--cyan), 0 0 15px var(--cyan);
+  animation: pulse 1.8s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: .4; transform: scale(.7); }
+}
+
+h1 {
+  margin-top: 17px !important;
+  font-size: 36px !important;
+  line-height: 1.1 !important;
+  font-weight: 700 !important;
+  letter-spacing: -1.8px !important;
+  background: linear-gradient(110deg, #ffffff 15%, #b9f7ff 45%, #9e8cff 90%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: #b9f7ff !important;
+}
+.hero p {
+  max-width: 430px;
+  margin: 12px auto 0;
+  color: #93a4be !important;
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.panel {
+  position: relative;
+  width: 100%;
+  padding: 16px;
+  border-radius: 26px;
+  background: linear-gradient(145deg, rgba(16, 25, 43, .92), rgba(5, 9, 17, .94));
+  border: 1px solid rgba(255, 255, 255, .09);
+  box-shadow: 0 40px 100px rgba(0, 0, 0, .55), inset 0 1px 0 rgba(255, 255, 255, .045);
+  backdrop-filter: blur(20px);
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+.form-label {
+  display: block;
+  margin-bottom: 8px;
+  color: #93a4be;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+input, select {
+  width: 100%;
+  height: 46px;
+  padding: 0 14px;
+  outline: none;
+  border: 1px solid rgba(255, 255, 255, .075);
+  border-radius: 12px;
+  background: #060d18 !important;
+  color: #fff !important;
+  font-family: Inter, Arial, sans-serif;
+  font-size: 12px;
+  transition: .25s;
+}
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2342e8ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 14px center !important;
+  background-size: 16px !important;
+  cursor: pointer;
+}
+select option {
+  background-color: #060d18 !important;
+  color: #f5f8ff !important;
+  padding: 12px !important;
+}
+
+input::placeholder { color: #455268; }
+input:focus, select:focus {
+  border-color: rgba(66, 232, 255, 0.8) !important;
+  box-shadow: 0 0 15px rgba(66, 232, 255, 0.35), inset 0 0 5px rgba(66, 232, 255, 0.2) !important;
+}
+
+.add-bar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+  background: #060d18;
+  padding: 10px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, .075);
+}
+.platform-select {
+  flex: 1;
+  height: 44px;
+  border-radius: 10px;
+  background: #03050b !important;
+  color: #42e8ff !important;
+  font-weight: bold;
+}
+.add-btn-main {
+  padding: 0 16px;
+  height: 44px;
+  border: 0;
+  border-radius: 10px;
+  cursor: pointer;
+  color: #061019;
+  font-size: 12px;
+  font-weight: 800;
+  background: linear-gradient(110deg, #42e5ff, #7288ff 55%, #a174ff);
+  box-shadow: 0 8px 28px rgba(70, 150, 255, .14);
+  white-space: nowrap;
+}
+.add-btn-main:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 35px rgba(70, 170, 255, .25);
+}
+
+.url-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.url-card {
+  padding: 12px;
+  border-radius: 14px;
+  background: #060d18;
+  border: 1px solid rgba(255, 255, 255, .075);
+}
+.url-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+.platform-tag {
+  font-size: 12px;
+  font-weight: bold;
+  color: #bdf6ff;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.edit-label-btn {
+  background: none;
+  border: none;
+  color: #42e8ff;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 2px 4px;
+}
+.inline-edit-input {
+  width: 130px !important;
+  height: 32px !important;
+  padding: 4px 8px !important;
+  border-radius: 6px !important;
+  border: 1px solid #42e8ff !important;
+  background: #03050b !important;
+  color: #fff !important;
+  font-size: 12px !important;
+  font-weight: bold !important;
+}
+.url-row {
+  display: flex;
+  gap: 8px;
+}
+.url-row input {
+  flex: 1;
+  height: 42px;
+}
+.remove-btn {
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 80, 110, .2);
+  border-radius: 10px;
+  background: #24131b;
+  color: #ff6c8c;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.remove-btn:hover { background: #381522; }
+
+.timer-config-box {
+  margin-bottom: 16px;
+  padding: 14px;
+  border-radius: 14px;
+  background: #060d18;
+  border: 1px solid rgba(255, 255, 255, .075);
+}
+.timer-inputs-grid {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+}
+.custom-timer-wrap {
+  flex: 1;
+  display: none;
+}
+.custom-timer-wrap.show { display: block; }
+
+.toggle-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px;
+  margin-bottom: 16px;
+  border-radius: 14px;
+  background: #060d18;
+  border: 1px solid rgba(255, 255, 255, .075);
+}
+.toggle-title {
+  font-size: 13px;
+  font-weight: bold;
+  color: #f5f8ff;
+}
+.toggle-desc {
+  font-size: 11px;
+  color: #7f8ca3;
+}
+
+/* Switch */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 46px;
+  height: 24px;
+  flex-shrink: 0;
+}
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider {
+  position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #03050b; transition: .3s; border-radius: 34px;
+  border: 1px solid rgba(255, 255, 255, .15);
+}
+.slider:before {
+  position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 3px;
+  background-color: #fff; transition: .3s; border-radius: 50%;
+}
+input:checked + .slider {
+  background: linear-gradient(110deg, #42e5ff, #7288ff);
+  border-color: #42e8ff;
+}
+input:checked + .slider:before { transform: translateX(22px); }
+
+.mode-selector {
+  display: flex;
+  gap: 10px;
+  margin-top: 6px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.mode-selector label {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #060d18;
+  border: 1px solid rgba(255, 255, 255, .075);
+  padding: 6px 12px;
+  border-radius: 8px;
+  color: #7f8ca3;
+}
+.mode-selector label:has(input:checked) {
+  border-color: #42e8ff;
+  background: rgba(66, 232, 255, .1);
+  color: #42e8ff;
+}
+.mode-selector input[type="radio"] { all: unset; }
+
+.password-container {
+  display: none;
+  margin-top: 8px;
+}
+.password-container.show {
+  display: block;
+}
+
+button.generate-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 48px;
+  padding: 0 18px;
+  border: 1px solid rgba(255, 255, 255, .12);
+  border-radius: 12px;
+  color: #061019;
+  font-family: Inter, Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  background: linear-gradient(110deg, #42e5ff, #7288ff 55%, #a174ff);
+  box-shadow: 0 8px 28px rgba(70, 150, 255, .14);
+  margin-top: 10px;
+}
+button.generate-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 35px rgba(70, 170, 255, .25);
+}
+
+.loader {
+  width: 16px; height: 16px; display: inline-block; vertical-align: -2px; margin-right: 8px;
+  border: 2px solid rgba(6, 16, 25, .35); border-top-color: #061019; border-radius: 50%;
+  animation: spin .7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.message { min-height: 18px; margin-top: 10px; text-align: center; color: #42e8ff; font-size: 11px; font-weight: 600; }
+
+/* Result Box */
+.result {
+  display: none;
+  margin-top: 20px;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, .09);
+  background: #060d18;
+}
+.result.show { display: block; }
+.result-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: #0a1324;
+  border-bottom: 1px solid rgba(255, 255, 255, .07);
+}
+.result-heading { font-size: 13px; font-weight: bold; color: #f5f8ff; }
+.tabs { display: flex; gap: 6px; }
+.tab {
+  border: 0; padding: 6px 12px; border-radius: 8px; background: #03050b;
+  color: #7f8ca3; cursor: pointer; font-size: 11px; font-weight: bold;
+}
+.tab.active { color: #061019; background: #42e8ff; }
+.code-box {
+  display: block; width: 100%; height: 320px; padding: 14px; resize: vertical; outline: none;
+  border: 0; background: #03050b; color: #f5f8ff; font-family: Consolas, monospace; font-size: 11px; line-height: 1.5;
+}
+.preview-frame { width: 100%; height: 650px; border: 0; background: #03050b; }
+.result-actions {
+  display: flex; gap: 8px; padding: 12px; border-top: 1px solid rgba(255, 255, 255, .07); background: #0a1324; flex-wrap: wrap;
+}
+.action-btn {
+  flex: 1; border: 0; border-radius: 10px; padding: 10px; cursor: pointer; color: #fff; font-weight: bold; font-size: 11px; min-width: 120px;
+}
+.copy-code { background: #12313a; color: #42e8ff; }
+.preview-btn { background: #271b43; color: #c5adff; }
+.newtab-btn { background: #1a3326; color: #4ce3a8; }
+.sharelink-btn { background: #382712; color: #ffb042; }
+
+/* History Box */
+.history-container {
+  margin-top: 20px;
+  padding: 14px;
+  background: #060d18;
+  border: 1px solid rgba(255, 255, 255, .075);
+  border-radius: 16px;
+}
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 12px;
+  font-weight: bold;
+  color: #bdf6ff;
+}
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 240px;
+  overflow-y: auto;
+}
+.history-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #03050b;
+  border: 1px solid rgba(255, 255, 255, .06);
+  padding: 10px 14px;
+  border-radius: 10px;
+  gap: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.history-item:hover {
+  border-color: rgba(66, 232, 255, 0.4);
+  background: rgba(16, 25, 43, 0.6);
+}
+.history-info {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  flex: 1;
+}
+.history-url {
+  font-size: 11.5px;
+  color: #42e8ff;
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 600;
+}
+.history-date { font-size: 9.5px; color: #7f8ca3; margin-top: 3px;}
+.history-actions { display: flex; gap: 6px; }
+.history-btn {
+  padding: 5px 10px; font-size: 10px; border-radius: 6px; border: none; cursor: pointer; background: #4ce3a8; color: #02110c; font-weight: bold;
+}
+.history-btn.del {
+  background: rgba(255, 100, 124, 0.15); color: #ff647c; border: 1px solid rgba(255, 100, 124, 0.3);
+}
+
+/* Informative Article Section (500+ Words) */
+.article-panel {
+  background: linear-gradient(145deg, rgba(16, 25, 43, .92), rgba(5, 9, 17, .94));
+  border: 1px solid rgba(255, 255, 255, .09);
+  border-radius: 26px;
+  padding: 24px;
+  margin-top: 25px;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, .55);
+}
+.article-panel h2 {
+  font-size: 18px;
+  color: #bdf6ff;
+  margin-bottom: 14px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+.article-panel h3 {
+  font-size: 15px;
+  color: #72eaff;
+  margin: 16px 0 8px;
+  font-weight: 700;
+}
+.article-panel p {
+  font-size: 11.5px;
+  color: #8a9bb8;
+  line-height: 1.8;
+  margin-bottom: 12px;
+}
+.article-panel ul {
+  margin-left: 18px;
+  margin-bottom: 12px;
+}
+.article-panel li {
+  font-size: 11.5px;
+  color: #8a9bb8;
+  line-height: 1.7;
+  margin-bottom: 6px;
+}
+.article-panel code {
+  background: #060d18;
+  color: #42e8ff;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 11px;
+}
+
+/* Footer Stats Container */
+.footer-stats-box {
+  display: flex;
+  gap: 12px;
+  margin-top: 25px;
+  margin-bottom: 15px;
+}
+.stat-box {
+  flex: 1;
+  background: linear-gradient(145deg, rgba(16, 25, 43, .92), rgba(5, 9, 17, .94));
+  border: 1px solid rgba(255, 255, 255, .09);
+  border-radius: 16px;
+  padding: 12px;
+  text-align: center;
+}
+.stat-value {
+  font-size: 18px;
+  font-weight: 800;
+  color: #42e8ff;
+  font-family: monospace;
+  margin-bottom: 3px;
+  text-shadow: 0 0 10px rgba(66,232,255,0.4);
+}
+.stat-label {
+  font-size: 9.5px;
+  color: #7f8ca3;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+/* Footer Links */
+.footer-links-box {
+  margin-top: 15px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.footer-links-box a {
+  color: #42e8ff;
+  text-decoration: none;
+  transition: 0.2s;
+}
+.footer-links-box a:hover {
+  text-decoration: underline;
+  color: #bdf6ff;
+}
+.minimal-footer {
+  margin-top: 12px;
+  text-align: center;
+  color: #4a5568;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+</style>
+</head>
+<body>
+
+<div class="app-frame-container">
+  <header class="header">
+    <div class="brand"><span class="brand-icon"></span>VIP Verification Gateway</div>
+    <div class="admin">Free Verification</div>
+  </header>
+  
+  <main class="wrapper">
+    <section class="hero">
+      <div class="badge"><i></i>PREMIUM TOOL</div>
+      <h1>Verification Gateway</h1>
+      <p>Create a premium multi-step verification gateway with custom links instantly.</p>
+    </section>
+
+    <!-- Main Tool Panel -->
+    <section class="panel">
+      <div class="form-group">
+        <label class="form-label">Social Verification Links</label>
+        <div class="add-bar">
+          <select id="platformSelect" class="platform-select">
+            <option value="youtube">YouTube (Subscribe)</option>
+            <option value="facebook">Facebook (Follow)</option>
+            <option value="instagram">Instagram (Follow)</option>
+            <option value="telegram">Telegram (Join)</option>
+            <option value="twitter">Twitter / X (Follow)</option>
+            <option value="snapchat">Snapchat (Add)</option>
+            <option value="pinterest">Pinterest (Follow)</option>
+            <option value="tiktok">TikTok (Follow)</option>
+            <option value="discord">Discord (Join Server)</option>
+            <option value="whatsapp">WhatsApp (Join Channel)</option>
+          </select>
+          <button type="button" class="add-btn-main" onclick="addSelectedPlatform()">+ Add Social Link</button>
+        </div>
+      </div>
+
+      <!-- DYNAMIC LIST CONTAINER -->
+      <div class="url-list" id="dynamicSocialList"></div>
+
+      <!-- STEP TIMER SELECTOR -->
+      <div class="timer-config-box">
+        <label class="form-label">Verification Timer</label>
+        <div class="timer-inputs-grid">
+          <select id="timerPresetSelect" onchange="handleTimerPresetChange()">
+            <option value="5">5 Seconds</option>
+            <option value="10" selected>10 Seconds (Standard)</option>
+            <option value="15">15 Seconds</option>
+            <option value="20">20 Seconds</option>
+            <option value="30">30 Seconds</option>
+            <option value="60">60 Seconds (1 Minute)</option>
+            <option value="custom">✏️ Custom Seconds</option>
+          </select>
+          <div id="customTimerWrap" class="custom-timer-wrap">
+            <input type="number" id="customTimerInput" min="1" max="300" placeholder="e.g. 12 seconds">
+          </div>
+        </div>
+      </div>
+
+      <!-- CAPTCHA TOGGLE -->
+      <div class="toggle-box">
+        <div>
+          <div class="toggle-title">Final Captcha Verification</div>
+          <div class="toggle-desc">Require math captcha before unlocking</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="enableCaptcha" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <!-- PASSWORD TOGGLE ON/OFF -->
+      <div class="toggle-box" style="margin-bottom: 8px;">
+        <div>
+          <div class="toggle-title">Verification Password Protection</div>
+          <div class="toggle-desc">Enable or disable password verification step</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="enablePassword" onchange="togglePasswordBox()">
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="form-group password-container" id="passwordBoxContainer">
+        <label class="form-label">Password Value</label>
+        <input id="verificationPassword" type="text" placeholder="e.g. 9918">
+      </div>
+
+      <!-- OUTPUT MODE -->
+      <div class="form-group" style="margin-top: 14px;">
+        <label class="form-label" id="outputFieldLabel">Custom Access Key</label>
+        <div class="mode-selector">
+          <label><input type="radio" name="outputMode" value="key" checked onchange="toggleOutputMode()"> Key</label>
+          <label><input type="radio" name="outputMode" value="url" onchange="toggleOutputMode()"> URL</label>
+        </div>
+        <div style="margin-top: 8px;">
+          <input id="customAccessKey" type="text" placeholder="e.g. VIP-AIM-LIFE-TIME-TIS">
+        </div>
+      </div>
+
+      <!-- GENERATE BUTTON -->
+      <button class="generate-btn" id="generateBtn" type="button" onclick="generateGateway()">
+        ⚡ Generate Verification Gateway
+      </button>
+
+      <div class="message" id="message"></div>
+    </section>
+
+    <!-- RESULT -->
+    <div class="panel result" id="result" style="padding: 0; overflow: hidden;">
+      <div class="result-header">
+        <div class="result-heading">Generated Result</div>
+        <div class="tabs">
+          <button class="tab active" id="codeTab" onclick="showCode()">CODE</button>
+          <button class="tab" id="previewTab" onclick="showPreview()">PREVIEW</button>
+        </div>
+      </div>
+
+      <div class="code-view" id="codeView">
+        <textarea id="generatedCode" class="code-box" readonly></textarea>
+      </div>
+
+      <div class="preview-view" id="previewView" style="display:none;">
+        <iframe id="previewFrame" class="preview-frame" sandbox="allow-scripts allow-forms allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation allow-modals" allow="clipboard-write"></iframe>
+      </div>
+
+      <div class="result-actions">
+        <button class="action-btn copy-code" type="button" onclick="copyCode()">📋 Copy Code</button>
+        <button class="action-btn preview-btn" type="button" onclick="showPreview()">👁 Preview</button>
+        <button class="action-btn newtab-btn" type="button" onclick="openTestInNewTab()">🚀 Test in New Tab</button>
+        <button class="action-btn sharelink-btn" type="button" onclick="copyShareableLink()">🔗 Copy Share Link</button>
+      </div>
+    </div>
+
+    <!-- HOMEPAGE PERMANENT HISTORY BOX -->
+    <section class="panel">
+      <div class="history-header">
+        <span style="font-size: 12px; font-weight: bold; color: #bdf6ff;">📜 HOMEPAGE GENERATION HISTORY</span>
+        <button type="button" class="history-btn del" onclick="clearHistory()">Clear All</button>
+      </div>
+      <div class="history-list" id="historyListContainer">
+        <!-- History items loaded dynamically -->
+      </div>
+    </section>
+
+    <!-- Informative Article Section (500+ Words) -->
+    <section class="article-panel">
+      <h2>Complete Guide: How to Use the VIP Verification Gateway Generator</h2>
+      
+      <p>Welcome to the ultimate <strong>VIP Verification Gateway Generator</strong>—a powerful, multi-purpose, and secure content locking utility designed for digital creators, developers, software distributors, and online community administrators. In today’s competitive digital ecosystem, protecting your proprietary links, download files, premium configuration keys, and VIP service tokens is crucial. If you share resources directly without any interactive security barrier, you miss out on growing your social media footprint and protecting your assets from automated scrapers or leech bots. This advanced online generator allows you to create fully customized, robust, and highly engaging verification gateways within seconds, requiring absolutely zero advanced coding knowledge.</p>
+
+      <h3>Why Do You Need a Verification Gateway?</h3>
+      <p>Content locking and social verification gateways serve as a mutual exchange bridge between creators and audiences. When users want to access a premium resource, software crack, configuration file, or private channel, they complete simple, authentic engagement tasks—such as subscribing to your official YouTube channel, joining your Telegram broadcast, or following your social accounts. This organic mechanism drastically boosts your platform visibility, increases subscriber count, and ensures that only genuinely interested users obtain your valuable download keys.</p>
+
+      <h3>Key Features Built into This Tool</h3>
+      <ul>
+        <li><strong>Multi-Platform Support:</strong> Easily add up to 10 popular social media platforms including YouTube, Telegram, Instagram, Facebook, Twitter/X, Discord, WhatsApp, and TikTok with customized display labels.</li>
+        <li><strong>Smart Return Countdown Timers:</strong> Configure precise waiting delays (ranging from 5 seconds up to 60 seconds or custom durations). The intelligent script tracks user tab focus and visibility to ensure they return only after completing the action.</li>
+        <li><strong>Dynamic Math Captcha:</strong> Protect your gateway from automated bot scripts by enabling the randomized arithmetic addition/subtraction verification step.</li>
+        <li><strong>Optional Password Security:</strong> Turn the password verification step ON or OFF using our slick switch toggle. When enabled, users must input your confidential passcode to unlock the final asset.</li>
+        <li><strong>Flexible Output Modes:</strong> Deliver either a custom secret text license key (with a 1-click copy utility) or an automatic direct file download redirection link.</li>
+        <li><strong>Persistent Homepage History Log:</strong> Every gateway configuration you build is automatically saved to your browser's persistent storage right on the homepage. Even after refreshing the page or restarting your browser, your history remains fully intact. Simply click on any historical record in the history box to instantly restore all associated social links, timers, passwords, and target keys back into the editor tool.</li>
+        <li><strong>Instant Live Preview & Testing:</strong> Switch instantly between the generated raw HTML code and a live interactive preview frame, or test your working gateway instantly in a new browser tab with one click.</li>
+      </ul>
+
+      <h3>Step-by-Step Instructions to Create Your Gateway</h3>
+      <p>Building and deploying your custom verification gateway takes less than a minute. Follow these simple steps:</p>
+      <ul>
+        <li><strong>Step 1: Add Social Links:</strong> Select your desired platforms from the dropdown selector and click <code>+ Add Social Link</code>. Paste your channel or profile URLs into the input boxes. You can also click the pen icon (🖊) to rename the platform title dynamically.</li>
+        <li><strong>Step 2: Configure Timers & Security:</strong> Choose your preferred countdown duration. Toggle the Math Captcha and Password Protection switches according to your security requirements. If password protection is enabled, specify your secret passphrase.</li>
+        <li><strong>Step 3: Define Output Destination:</strong> Choose whether your gateway should unlock a text-based Custom Access Key or redirect users directly to a target Download URL. Fill in your final key string or file link.</li>
+        <li><strong>Step 4: Generate & Export:</strong> Click the <strong>⚡ Generate Verification Gateway</strong> button. The tool will instantly render a clean, self-contained, standalone HTML package. You can copy the code, test it live, or reload it anytime directly from your persistent history panel on the homepage.</li>
+      </ul>
+
+      <p>Empower your distribution workflow today with professional-grade verification infrastructure. Enjoy seamless performance, bulletproof security, and effortless audience growth!</p>
+    </section>
+
+    <!-- LIVE STATS COUNTERS IN FOOTER -->
+    <div class="footer-stats-box">
+      <div class="stat-box">
+        <div class="stat-value" id="activeCount">12,450</div>
+        <div class="stat-label">ACTIVE USERS</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-value" id="newUserCount">3,820</div>
+        <div class="stat-label">NEW USERS TODAY</div>
+      </div>
+    </div>
+
+    <!-- Footer Links Added -->
+    <div class="footer-links-box">
+      <a href="https://isrartoolzone.blogspot.com/" target="_blank">Home</a>
+      <a href="https://isrartoolzone.blogspot.com/?m=1" target="_blank">My Tool</a>
+    </div>
+
+    <div class="minimal-footer">VIP ACCESS GENERATOR TOOL</div>
+  </main>
+</div>
+
+<script>
 document.addEventListener('DOMContentLoaded', () => {
+  // Super Fast & Dynamic Live Fluctuating Counters (Active 10k-15k, New 2k-5k)
+  let activeUsers = 12450;
+  let newUsers = 3820;
+
+  setInterval(() => {
+    activeUsers += Math.floor(Math.random() * 81) - 40; // -40 to +40 fast shift
+    if(activeUsers < 10000) activeUsers = 10000;
+    if(activeUsers > 15000) activeUsers = 15000;
+    document.getElementById("activeCount").textContent = activeUsers.toLocaleString();
+
+    newUsers += Math.floor(Math.random() * 51) - 25; // -25 to +25 fast shift
+    if(newUsers < 2000) newUsers = 2000;
+    if(newUsers > 5000) newUsers = 5000;
+    document.getElementById("newUserCount").textContent = newUsers.toLocaleString();
+  }, 400); // Super fast interval update
+
   window.handleTimerPresetChange = function() {
     const val = document.getElementById("timerPresetSelect").value;
     const wrap = document.getElementById("customTimerWrap");
@@ -250,7 +1140,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function saveToHistory(configObj) {
     let history = [];
     try {
-      history = JSON.parse(localStorage.getItem("israr_homepage_history_v5")) || [];
+      history = JSON.parse(localStorage.getItem("israr_homepage_history_v7")) || [];
     } catch(e) { history = []; }
 
     const now = new Date();
@@ -258,10 +1148,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const summary = configObj.links.map(l => l.platform).join(" → ");
     
     history.unshift({ config: configObj, summary: summary, date: dateStr });
-    if(history.length > 100) history = history.slice(0, 100);
+    if(history.length > 200) history = history.slice(0, 200);
 
     try {
-      localStorage.setItem("israr_homepage_history_v5", JSON.stringify(history));
+      localStorage.setItem("israr_homepage_history_v7", JSON.stringify(history));
     } catch(e) {
       console.error("LocalStorage save failed", e);
     }
@@ -273,7 +1163,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if(!container) return;
     let history = [];
     try {
-      history = JSON.parse(localStorage.getItem("israr_homepage_history_v5")) || [];
+      history = JSON.parse(localStorage.getItem("israr_homepage_history_v7")) || [];
     } catch(e) { history = []; }
 
     if(history.length === 0) {
@@ -300,7 +1190,7 @@ document.addEventListener('DOMContentLoaded', () => {
   window.loadHistoryConfig = function(index) {
     let history = [];
     try {
-      history = JSON.parse(localStorage.getItem("israr_homepage_history_v5")) || [];
+      history = JSON.parse(localStorage.getItem("israr_homepage_history_v7")) || [];
     } catch(e) { history = []; }
 
     const item = history[index];
@@ -343,18 +1233,18 @@ document.addEventListener('DOMContentLoaded', () => {
   window.deleteHistoryItem = function(index) {
     let history = [];
     try {
-      history = JSON.parse(localStorage.getItem("israr_homepage_history_v5")) || [];
+      history = JSON.parse(localStorage.getItem("israr_homepage_history_v7")) || [];
     } catch(e) {}
     history.splice(index, 1);
     try {
-      localStorage.setItem("israr_homepage_history_v5", JSON.stringify(history));
+      localStorage.setItem("israr_homepage_history_v7", JSON.stringify(history));
     } catch(e) {}
     renderHistoryList();
   }
 
   window.clearHistory = function() {
     if(confirm("Are you sure you want to clear all homepage history?")) {
-      localStorage.removeItem("israr_homepage_history_v5");
+      localStorage.removeItem("israr_homepage_history_v7");
       renderHistoryList();
     }
   }
@@ -661,8 +1551,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 });
-
-
-
-
-भाई इस जावास्क्रिप्ट को हमको होस्ट करना है गए तो यह पूरी स्क्रिप्ट होस्ट करें या इसमें दो 
+</script>
+</body>
+</html>
