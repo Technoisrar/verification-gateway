@@ -1,5 +1,5 @@
 
-<script>
+
 document.addEventListener('DOMContentLoaded', () => {
   window.handleTimerPresetChange = function() {
     const val = document.getElementById("timerPresetSelect").value;
@@ -661,7 +661,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 });
-</script>
+
 
 
 
