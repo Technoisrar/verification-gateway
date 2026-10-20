@@ -562,12 +562,21 @@ button.generate-btn:hover {
   font-weight: 600;
 }
 .history-date { font-size: 9.5px; color: #7f8ca3; margin-top: 3px;}
-.history-actions { display: flex; gap: 6px; }
+.history-actions { display: flex; gap: 6px; align-items: center; }
 .history-btn {
   padding: 5px 10px; font-size: 10px; border-radius: 6px; border: none; cursor: pointer; background: #4ce3a8; color: #02110c; font-weight: bold;
 }
 .history-btn.del {
   background: rgba(255, 100, 124, 0.15); color: #ff647c; border: 1px solid rgba(255, 100, 124, 0.3);
+}
+.history-views-badge {
+  font-size: 10px;
+  color: #ffb042;
+  background: rgba(255, 176, 66, 0.15);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-weight: bold;
+  border: 1px solid rgba(255, 176, 66, 0.3);
 }
 
 /* Informative Article Section (500+ Words) */
@@ -697,6 +706,7 @@ button.generate-btn:hover {
         <div class="add-bar">
           <select id="platformSelect" class="platform-select">
             <option value="youtube">YouTube (Subscribe)</option>
+            <option value="youtube_watch">YouTube (Watch Video)</option>
             <option value="facebook">Facebook (Follow)</option>
             <option value="instagram">Instagram (Follow)</option>
             <option value="telegram">Telegram (Join)</option>
@@ -811,7 +821,10 @@ button.generate-btn:hover {
     <!-- HOMEPAGE PERMANENT HISTORY BOX -->
     <section class="panel">
       <div class="history-header">
-        <span style="font-size: 12px; font-weight: bold; color: #bdf6ff;">📜 HOMEPAGE GENERATION HISTORY</span>
+        <div style="display:flex; flex-direction:column; gap:2px;">
+          <span style="font-size: 12px; font-weight: bold; color: #bdf6ff;">📜 HOMEPAGE GENERATION HISTORY</span>
+          <span id="totalGenerationsCount" style="font-size: 10px; color: #7f8ca3; font-weight: 600;">Total Gateways Generated: 0</span>
+        </div>
         <button type="button" class="history-btn del" onclick="clearHistory()">Clear All</button>
       </div>
       <div class="history-list" id="historyListContainer">
@@ -826,23 +839,23 @@ button.generate-btn:hover {
       <p>Welcome to the ultimate <strong>VIP Verification Gateway Generator</strong>—a powerful, multi-purpose, and secure content locking utility designed for digital creators, developers, software distributors, and online community administrators. In today’s competitive digital ecosystem, protecting your proprietary links, download files, premium configuration keys, and VIP service tokens is crucial. If you share resources directly without any interactive security barrier, you miss out on growing your social media footprint and protecting your assets from automated scrapers or leech bots. This advanced online generator allows you to create fully customized, robust, and highly engaging verification gateways within seconds, requiring absolutely zero advanced coding knowledge.</p>
 
       <h3>Why Do You Need a Verification Gateway?</h3>
-      <p>Content locking and social verification gateways serve as a mutual exchange bridge between creators and audiences. When users want to access a premium resource, software crack, configuration file, or private channel, they complete simple, authentic engagement tasks—such as subscribing to your official YouTube channel, joining your Telegram broadcast, or following your social accounts. This organic mechanism drastically boosts your platform visibility, increases subscriber count, and ensures that only genuinely interested users obtain your valuable download keys.</p>
+      <p>Content locking and social verification gateways serve as a mutual exchange bridge between creators and audiences. When users want to access a premium resource, software crack, configuration file, or private channel, they complete simple, authentic engagement tasks—such as subscribing to your official YouTube channel, watching a video, joining your Telegram broadcast, or following your social accounts. This organic mechanism drastically boosts your platform visibility, increases subscriber count, and ensures that only genuinely interested users obtain your valuable download keys.</p>
 
       <h3>Key Features Built into This Tool</h3>
       <ul>
-        <li><strong>Multi-Platform Support:</strong> Easily add up to 10 popular social media platforms including YouTube, Telegram, Instagram, Facebook, Twitter/X, Discord, WhatsApp, and TikTok with customized display labels.</li>
+        <li><strong>Multi-Platform Support:</strong> Easily add up to popular social media platforms including YouTube Subscribe, YouTube Watch Video, Telegram, Instagram, Facebook, Twitter/X, Discord, WhatsApp, and TikTok with customized display labels.</li>
         <li><strong>Smart Return Countdown Timers:</strong> Configure precise waiting delays (ranging from 5 seconds up to 60 seconds or custom durations). The intelligent script tracks user tab focus and visibility to ensure they return only after completing the action.</li>
         <li><strong>Dynamic Math Captcha:</strong> Protect your gateway from automated bot scripts by enabling the randomized arithmetic addition/subtraction verification step.</li>
         <li><strong>Optional Password Security:</strong> Turn the password verification step ON or OFF using our slick switch toggle. When enabled, users must input your confidential passcode to unlock the final asset.</li>
         <li><strong>Flexible Output Modes:</strong> Deliver either a custom secret text license key (with a 1-click copy utility) or an automatic direct file download redirection link.</li>
-        <li><strong>Persistent Homepage History Log:</strong> Every gateway configuration you build is automatically saved to your browser's persistent storage right on the homepage. Even after refreshing the page or restarting your browser, your history remains fully intact. Simply click on any historical record in the history box to instantly restore all associated social links, timers, passwords, and target keys back into the editor tool.</li>
+        <li><strong>Persistent Homepage History Log:</strong> Every gateway configuration you build is automatically saved to your browser's persistent storage right on the homepage, along with a real-time **Views Counter** tracking how many users opened/interacted with it.</li>
         <li><strong>Instant Live Preview & Testing:</strong> Switch instantly between the generated raw HTML code and a live interactive preview frame, or test your working gateway instantly in a new browser tab with one click.</li>
       </ul>
 
       <h3>Step-by-Step Instructions to Create Your Gateway</h3>
       <p>Building and deploying your custom verification gateway takes less than a minute. Follow these simple steps:</p>
       <ul>
-        <li><strong>Step 1: Add Social Links:</strong> Select your desired platforms from the dropdown selector and click <code>+ Add Social Link</code>. Paste your channel or profile URLs into the input boxes. You can also click the pen icon (🖊) to rename the platform title dynamically.</li>
+        <li><strong>Step 1: Add Social Links:</strong> Select your desired platforms from the dropdown selector (including YouTube Watch Video) and click <code>+ Add Social Link</code>. Paste your channel or video URLs into the input boxes. You can also click the pen icon (🖊) to rename the platform title dynamically.</li>
         <li><strong>Step 2: Configure Timers & Security:</strong> Choose your preferred countdown duration. Toggle the Math Captcha and Password Protection switches according to your security requirements. If password protection is enabled, specify your secret passphrase.</li>
         <li><strong>Step 3: Define Output Destination:</strong> Choose whether your gateway should unlock a text-based Custom Access Key or redirect users directly to a target Download URL. Fill in your final key string or file link.</li>
         <li><strong>Step 4: Generate & Export:</strong> Click the <strong>⚡ Generate Verification Gateway</strong> button. The tool will instantly render a clean, self-contained, standalone HTML package. You can copy the code, test it live, or reload it anytime directly from your persistent history panel on the homepage.</li>
@@ -935,6 +948,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const PLATFORM_CONFIG = {
     youtube: { name: "YouTube", title: "Subscribe", desc: "Subscribe to our official YouTube channel to continue.", btn: "Subscribe on YouTube", placeholder: "e.g. https://youtube.com/@channel" },
+    youtube_watch: { name: "YouTube Watch", title: "Watch Video", desc: "Watch our YouTube video for at least 10 seconds to continue.", btn: "Watch Video on YouTube", placeholder: "e.g. https://youtube.com/watch?v=..." },
     facebook: { name: "Facebook", title: "Follow Facebook", desc: "Follow our official Facebook page to unlock the next step.", btn: "Follow on Facebook", placeholder: "e.g. https://facebook.com/page" },
     instagram: { name: "Instagram", title: "Follow Instagram", desc: "Follow our official Instagram profile to continue verification.", btn: "Follow Instagram", placeholder: "e.g. https://instagram.com/username" },
     telegram: { name: "Telegram", title: "Join Telegram", desc: "Join our official Telegram channel to unlock the next step.", btn: "Join Telegram", placeholder: "e.g. https://t.me/channel" },
@@ -1033,6 +1047,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if(document.querySelectorAll("#dynamicSocialList .url-card").length === 0){
       addSelectedPlatform("youtube");
+      addSelectedPlatform("youtube_watch");
       addSelectedPlatform("telegram");
     }
     renderHistoryList();
@@ -1140,18 +1155,18 @@ document.addEventListener('DOMContentLoaded', () => {
   function saveToHistory(configObj, generatedCode) {
     let history = [];
     try {
-      history = JSON.parse(localStorage.getItem("israr_homepage_history_v7")) || [];
+      history = JSON.parse(localStorage.getItem("israr_homepage_history_v8")) || [];
     } catch(e) { history = []; }
 
     const now = new Date();
     const dateStr = now.toLocaleDateString() + ' ' + now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     const summary = configObj.links.map(l => l.platform).join(" → ");
     
-    history.unshift({ config: configObj, code: generatedCode, summary: summary, date: dateStr });
+    history.unshift({ config: configObj, code: generatedCode, summary: summary, date: dateStr, views: 0 });
     if(history.length > 200) history = history.slice(0, 200);
 
     try {
-      localStorage.setItem("israr_homepage_history_v7", JSON.stringify(history));
+      localStorage.setItem("israr_homepage_history_v8", JSON.stringify(history));
     } catch(e) {
       console.error("LocalStorage save failed", e);
     }
@@ -1160,11 +1175,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   window.renderHistoryList = function() {
     const container = document.getElementById("historyListContainer");
+    const countLabel = document.getElementById("totalGenerationsCount");
     if(!container) return;
     let history = [];
     try {
-      history = JSON.parse(localStorage.getItem("israr_homepage_history_v7")) || [];
+      history = JSON.parse(localStorage.getItem("israr_homepage_history_v8")) || [];
     } catch(e) { history = []; }
+
+    if(countLabel) {
+      countLabel.textContent = "Total Gateways Generated: " + history.length;
+    }
 
     if(history.length === 0) {
       container.innerHTML = '<div style="font-size:11px;color:#7f8ca3;text-align:center;padding:12px;">No saved history found on homepage yet. Generate a gateway above!</div>';
@@ -1173,12 +1193,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let html = '';
     history.forEach((item, index) => {
+      const viewsCount = item.views || 0;
       html += `<div class="history-item" onclick='loadHistoryConfig(${index})'>
         <div class="history-info">
           <span class="history-url">🔗 ${item.summary} (${item.config.outputMode.toUpperCase()})</span>
           <span class="history-date">🕒 ${item.date} — Click to load data</span>
         </div>
         <div class="history-actions" onclick="event.stopPropagation()">
+          <span class="history-views-badge">Views: ${viewsCount}</span>
           <button type="button" class="history-btn" onclick='loadHistoryConfig(${index})'>Load</button>
           <button type="button" class="history-btn del" onclick='deleteHistoryItem(${index})'>Del</button>
         </div>
@@ -1190,7 +1212,7 @@ document.addEventListener('DOMContentLoaded', () => {
   window.loadHistoryConfig = function(index) {
     let history = [];
     try {
-      history = JSON.parse(localStorage.getItem("israr_homepage_history_v7")) || [];
+      history = JSON.parse(localStorage.getItem("israr_homepage_history_v8")) || [];
     } catch(e) { history = []; }
 
     const item = history[index];
@@ -1235,18 +1257,18 @@ document.addEventListener('DOMContentLoaded', () => {
   window.deleteHistoryItem = function(index) {
     let history = [];
     try {
-      history = JSON.parse(localStorage.getItem("israr_homepage_history_v7")) || [];
+      history = JSON.parse(localStorage.getItem("israr_homepage_history_v8")) || [];
     } catch(e) {}
     history.splice(index, 1);
     try {
-      localStorage.setItem("israr_homepage_history_v7", JSON.stringify(history));
+      localStorage.setItem("israr_homepage_history_v8", JSON.stringify(history));
     } catch(e) {}
     renderHistoryList();
   }
 
   window.clearHistory = function() {
     if(confirm("Are you sure you want to clear all homepage history?")) {
-      localStorage.removeItem("israr_homepage_history_v7");
+      localStorage.removeItem("israr_homepage_history_v8");
       renderHistoryList();
     }
   }
@@ -1268,6 +1290,16 @@ document.addEventListener('DOMContentLoaded', () => {
       const jsonStr = decodeURIComponent(atob(encodedData));
       const data = JSON.parse(jsonStr);
       if (data && data.l && data.o) {
+        // Track view increment in local storage history matching this payload if possible
+        try {
+          let history = JSON.parse(localStorage.getItem("israr_homepage_history_v8")) || [];
+          let matched = history.find(h => JSON.stringify(h.config.links) === JSON.stringify(data.l) && h.config.outputValue === data.o);
+          if (matched) {
+            matched.views = (matched.views || 0) + 1;
+            localStorage.setItem("israr_homepage_history_v8", JSON.stringify(history));
+          }
+        } catch(e){}
+
         const code = createGatewayCode(data.l, data.ep === 1, data.p || '', data.o, data.m || 'key', data.c === 1, data.t || 10);
         document.open(); 
         document.write(code); 
